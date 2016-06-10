@@ -2,6 +2,8 @@
 
 import Api from './api'
 
+const consoleError = e => console.error(e);
+
 export default {
 
     state: {
@@ -10,14 +12,14 @@ export default {
     },
 
     fetchFriends() {
-        Api.get('friends')
-            .then(friends => state.friends = friends)
-            .catch(e => Console.error(e));
+        Api.fetchFriends()
+            .then(friends => this.state.friends = friends)
+            .catch(consoleError);
     },
 
     fetchRequests() {
-        Api.get('requests')
-            .then(friends => state.friends = friends)
-            .catch(e => Console.error(e));
+        Api.fetchRequests()
+            .then(requests => this.state.requests = requests)
+            .catch(consoleError);
     }
 }

@@ -13,23 +13,12 @@
     @import "../material-colors";
     @import "../utils";
 
-    .item {
-        height: 56px;
-    }
-
-    .avatar {
-        .center-vertical;
-        width: 40px;
-        height: 40px;
-        margin-left: 16px;
-        border: 1px solid @md-dark-divider;
-        border-radius: 50%;
-    }
-
-    .name {
-       .center-vertical;
-       .single-line;
-        margin-left: 16px;
+    .mdl-list__item {
+        padding: 8px 16px;
+        cursor: pointer;
+        &:active {
+            background: @md-dark-divider;
+        }
     }
 </style>
 

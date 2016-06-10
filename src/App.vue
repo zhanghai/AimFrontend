@@ -1,6 +1,6 @@
 <template>
     <main>
-        <section class="left">
+        <section class="left mdl-shadow--8dp">
             <home></home>
         </section>
         <section class="right"></section>

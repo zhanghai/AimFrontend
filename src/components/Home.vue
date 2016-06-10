@@ -9,9 +9,6 @@
                 <a href="#friends-panel" class="mdl-layout__tab">Friends</a>
             </div>
         </header>
-        <div class="mdl-layout__drawer">
-            <span class="mdl-layout-title">Title</span>
-        </div>
         <main class="mdl-layout__content">
             <section id="chats-panel" class="mdl-layout__tab-panel is-active">
                 <p>chats</p>
@@ -27,6 +24,9 @@
     /* HACK: Fix width. */
     .mdl-layout__container {
         position: relative !important;
+    }
+    .mdl-layout__header-row {
+        padding-left: 16px !important;
     }
 </style>
 
