@@ -45,6 +45,14 @@ const patch = isDebugEnvironment ? post : function (resource, body) {
         .then(toJson);
 };
 
+const delete_ = function (resource) {
+    return fetch(base + resource, {
+        method: 'delete',
+        credentials
+    })
+        .then(validateStatus);
+};
+
 export default {
 
     login(username, password) {
@@ -60,8 +68,16 @@ export default {
             .then(validateStatus)
     },
 
-    fetchFriends() {
-        return get('friends');
+    fetchProfile() {
+        return get('profile');
+    },
+
+    updateProfile(avatar, nickname, signature) {
+        return patch('profile', {
+            avatar,
+            nickname,
+            signature
+        });
     },
 
     sendRequest(username, message) {
@@ -77,5 +93,29 @@ export default {
 
     resolveRequest(requestId, accept) {
         return patch('requests/' + requestId, { state: accept ? 'accepted' : 'rejected' });
+    },
+
+    deleteRequest(requestId) {
+        return delete_('requests/' + requestId);
+    },
+
+    fetchFriends() {
+        return get('friends');
+    },
+
+    deleteFriend(username) {
+        return delete_('friends/' + username);
+    },
+
+    fetchUser(username) {
+        return get('users/' + username);
+    },
+
+    updateUser(username, alias, tags, description) {
+        return patch('users/' + username, {
+            alias,
+            tags,
+            description
+        });
     }
 }

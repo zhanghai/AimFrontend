@@ -1,5 +1,5 @@
 <template>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+    <div class="mdl-layout mdl-layout--fixed-header mdl-layout--no-drawer-button mdl-layout--fixed-tabs mdl-js-layout">
         <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
                 <span class="mdl-layout-title">Aim</span>
@@ -20,13 +20,11 @@
     </div>
 </template>
 
-<style>
-    /* HACK: Fix width. */
-    .mdl-layout__container {
-        position: relative !important;
-    }
-    .mdl-layout__header-row {
-        padding-left: 16px !important;
+<style scoped>
+    @media screen and (min-width: 1024px) {
+        .mdl-layout__header-row {
+            padding-left: 24px !important;
+        }
     }
 </style>
 

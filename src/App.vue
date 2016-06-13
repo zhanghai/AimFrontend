@@ -1,18 +1,23 @@
 <template>
     <main>
         <section class="left mdl-shadow--8dp">
-            <home></home>
+            <home-view></home-view>
         </section>
-        <section class="right"></section>
+        <section class="right mdl-shadow--8dp">
+            <router-view></router-view>
+        </section>
     </main>
 </template>
 
 <script>
-import Home from './components/Home'
+import HomeView from './components/HomeView'
+import UserView from './components/UserView'
 
 export default {
+    replace: false,
     components: {
-        Home
+        HomeView,
+        UserView
     }
 }
 </script>
@@ -22,25 +27,31 @@ html, body {
     width: 100%;
     height: 100%;
 }
+
+body {
+    display: flex;
+    background: url('assets/background.jpg') center / cover;
+}
+
+/* HACK: Fix width. */
+.mdl-layout__container {
+    position: relative !important;
+}
 </style>
 
 <style scoped lang="less">
 main {
-    width: 100%;
-    height: 100%;
+    display: flex;
+    width: 960px;
+    height: 90%;
+    max-height: 720px;
+    margin: auto;
 }
 
 section {
-    &.left {
-        width: 33.3333%;
-    }
-    &.right {
-        width: 66.6667%;
-    }
+    width: 400px;
     height: 100%;
-    display: inline-block;
-    &.right {
-        float: right;
-    }
+    margin: auto;
+    background-color: white;
 }
 </style>

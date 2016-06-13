@@ -1,6 +1,6 @@
 <template>
     <div class="mdl-list">
-        <div v-for="friend of state.friends" class="mdl-list__item">
+        <div v-for="friend of state.friends" track-by="_id" v-link="{ name: 'user', params: { username: friend.username } }" class="mdl-list__item">
             <span class="mdl-list__item-primary-content">
                 <img :src="friend.avatar" class="mdl-list__item-avatar">
                 <span>{{ friend.alias || friend.nickname }}</span>
@@ -19,6 +19,7 @@
         &:active {
             background: @md-dark-divider;
         }
+        transition: background ease 0.2s;
     }
 </style>
 
