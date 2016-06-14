@@ -11,13 +11,11 @@
 
 <script>
 import HomeView from './components/HomeView'
-import UserView from './components/UserView'
 
 export default {
     replace: false,
     components: {
-        HomeView,
-        UserView
+        HomeView
     }
 }
 </script>

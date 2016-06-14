@@ -66,6 +66,7 @@ export default {
             })
         })
             .then(validateStatus)
+            .then(toJson);
     },
 
     fetchProfile() {
@@ -117,5 +118,9 @@ export default {
             tags,
             description
         });
+    },
+
+    fetchChatByUser(username) {
+        return get('chats/user/' + username);
     }
 }

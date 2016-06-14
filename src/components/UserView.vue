@@ -35,13 +35,6 @@
             return {
                 user: {}
             };
-        },
-        route: {
-            data(transition) {
-                return {
-                    user: Store.fetchUser(transition.to.params.username)
-                };
-            }
         }
     }
 </script>

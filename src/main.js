@@ -10,7 +10,7 @@ import VueMdl from 'vue-mdl';
 
 import App from './App';
 
-import UserView from './components/UserView'
+import ChatView from './components/ChatView'
 
 Vue.use(VueRouter);
 Vue.use(VueMdl);
@@ -19,9 +19,9 @@ const router = new VueRouter({
     abstract: true
 });
 router.map({
-    '/user/:username': {
-        name: 'user',
-        component: UserView
+    '/chats/user/:username': {
+        name: 'chats/user',
+        component: ChatView
     }
 });
 
@@ -32,4 +32,3 @@ window.Store = Store;
 window.Api = Api;
 
 router.start(App, 'body');
-
