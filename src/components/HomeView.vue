@@ -1,44 +1,86 @@
 <template>
-    <div class="mdl-layout mdl-layout--fixed-header mdl-layout--no-drawer-button mdl-layout--fixed-tabs mdl-js-layout">
-        <header class="mdl-layout__header">
-            <div class="mdl-layout__header-row">
-                <span class="mdl-layout-title">Aim</span>
-            </div>
-            <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-                <a href="#chats-panel" class="mdl-layout__tab is-active">Chats</a>
-                <a href="#friends-panel" class="mdl-layout__tab">Friends</a>
-            </div>
+    <div>
+        <header class="navbar navbar-default">
+            <span class="navbar-brand">Aim</span>
         </header>
-        <main class="mdl-layout__content">
-            <section id="chats-panel" class="mdl-layout__tab-panel is-active">
-                <p>chats</p>
+        <nav>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#chats" data-toggle="tab">Chats</a></li>
+                <li><a href="#friends" data-toggle="tab">Friends</a></li>
+            </ul>
+        </nav>
+        <main class="tab-content">
+            <section id="chats" class="tab-pane fade in active">
+                <recent-list></recent-list>
             </section>
-            <section id="friends-panel" class="mdl-layout__tab-panel">
+            <section id="friends" class="tab-pane fade">
                 <friend-list></friend-list>
             </section>
         </main>
     </div>
 </template>
 
-<style scoped>
-    @media screen and (min-width: 1024px) {
-        .mdl-layout__header-row {
-            padding-left: 24px !important;
-        }
+<style scoped lang="less">
+    @import "../material-colors";
+
+    .navbar {
+        display: flex;
+        height: 56px;
+        margin: 0;
+        align-items: center;
+    }
+    .navbar-brand {
+        flex-shrink: 0;
+        height: initial !important;
+        padding: 0 16px;
+        color: @md-light-primary !important;
+        line-height: initial !important;
+        font-size: 20px;
+    }
+
+    .nav {
+        flex-shrink: 0;
+    }
+    .nav-tabs {
+        display: flex;
+        height: 48px;
+        align-items: center;
+        background: transparent;
+        border-bottom: 1px solid @md-dark-divider;
+    }
+    .nav-tabs > li {
+        flex-grow: 1;
+        margin: 0;
+    }
+    .nav-tabs > li > a {
+        display: block;
+        height: 48px;
+        padding: 0;
+        border-radius: 0;
+        color: @md-dark-secondary !important;
+        font-size: 16px;
+        line-height: 48px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: color 0.2s ease;
+    }
+    .nav-tabs > li > a:hover {
+        color: @md-dark-primary !important;
+    }
+    .nav-tabs > li.active > a {
+        border-bottom: 2px solid @md-blue-500 !important;
+        color: @md-blue-500 !important;
     }
 </style>
 
 <script>
     import FriendList from './FriendList'
+    import RecentList from './RecentList'
 
     export default{
-        data() {
-            return {
-                msg:'hello vue'
-            }
-        },
         components: {
-            FriendList
+            FriendList,
+            RecentList
         }
     }
 </script>

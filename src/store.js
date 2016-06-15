@@ -43,6 +43,26 @@ export default {
             .catch(consoleError);
     },
 
+    fetchRecents() {
+        return Api.fetchRecents()
+            .catch(consoleError);
+    },
+
+    fetchRecent(recentId) {
+        return Api.fetchRecent(recentId)
+            .catch(consoleError);
+    },
+
+    updateRecent(recentId, lastReadAt) {
+        return Api.updateRecent(recentId, lastReadAt)
+            .catch(consoleError);
+    },
+
+    deleteRecent(recentId) {
+        return Api.delete(recentId)
+            .catch(consoleError);
+    },
+
     fetchFriends() {
         return Api.fetchFriends()
             .catch(consoleError);
@@ -53,8 +73,18 @@ export default {
             .catch(consoleError);
     },
 
+    fetchChat(chatId) {
+        return Api.fetchChat(chatId)
+            .catch(consoleError);
+    },
+
     fetchChatByUser(username) {
         return Api.fetchChatByUser(username)
+            .catch(consoleError);
+    },
+
+    sendMessage(chatId, text) {
+        return Api.sendMessage(chatId, text)
             .catch(consoleError);
     }
 }

@@ -100,6 +100,22 @@ export default {
         return delete_('requests/' + requestId);
     },
 
+    fetchRecents() {
+        return get('recents');
+    },
+
+    fetchRecent(recentId) {
+        return get('recents/' + recentId);
+    },
+
+    updateRecent(recentId, lastReadAt) {
+        return post('recents/' + recentId, { lastReadAt });
+    },
+
+    deleteRecent(recentId) {
+        return delete_('recents/' + recentId);
+    },
+
     fetchFriends() {
         return get('friends');
     },
@@ -120,7 +136,15 @@ export default {
         });
     },
 
+    fetchChat(chatId) {
+        return get('chats/' + chatId);
+    },
+
     fetchChatByUser(username) {
         return get('chats/user/' + username);
+    },
+
+    sendMessage(chatId, text) {
+        return post('chats/' + chatId + '/messages', { text });
     }
 }

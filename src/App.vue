@@ -38,6 +38,8 @@ body {
 </style>
 
 <style scoped lang="less">
+@import "material-colors";
+
 main {
     display: flex;
     width: 960px;
@@ -50,6 +52,6 @@ section {
     width: 400px;
     height: 100%;
     margin: auto;
-    background-color: white;
+    background-color: @md-white;
 }
 </style>

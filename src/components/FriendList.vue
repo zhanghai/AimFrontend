@@ -1,25 +1,39 @@
 <template>
-    <div class="mdl-list">
-        <div v-for="friend of friends" track-by="_id" v-link="{ name: 'chats/user', params: { username: friend.username } }" class="mdl-list__item">
-            <span class="mdl-list__item-primary-content">
-                <img :src="friend.avatar" class="mdl-list__item-avatar">
-                <span>{{ friend.alias || friend.nickname }}</span>
-            </span>
+    <div class="list-group">
+        <div v-for="friend of friends" track-by="_id" v-link="{ name: 'chatByUser', params: { username: friend.username } }" class="list-group-item withripple">
+            <img :src="friend.avatar" class="img-circle">
+            <span class="name">{{ friend.alias || friend.nickname }}</span>
         </div>
     </div>
 </template>
 
 <style scoped lang="less">
     @import "../material-colors";
-    @import "../utils";
 
-    .mdl-list__item {
+    .list-group {
+        margin: 0;
+    }
+
+    .list-group-item {
+        display: flex;
+        height: 56px;
         padding: 8px 16px;
+        align-items: center;
         cursor: pointer;
-        &:active {
-            background: @md-dark-divider;
-        }
         transition: background ease 0.2s;
+    }
+    .list-group-item.v-link-active {
+        background: rgba(0, 0, 0, 0.06);
+    }
+
+    .img-circle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .name {
+        margin-left: 16px;
+        font-size: 16px;
     }
 </style>
 
