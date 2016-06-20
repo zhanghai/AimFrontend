@@ -1,24 +1,18 @@
 <template>
-    <main>
-        <section class="left mdl-shadow--8dp">
-            <home-view></home-view>
-        </section>
-        <section class="right mdl-shadow--8dp">
-            <router-view></router-view>
-        </section>
-    </main>
+    <div class="top">
+        <main>
+            <section class="left">
+                <home-view></home-view>
+            </section>
+            <section class="right">
+                <router-view></router-view>
+            </section>
+        </main>
+        <div class="modal" :class="{ visible: showLogin }">
+            <login-view></login-view>
+        </div>
+    </div>
 </template>
-
-<script>
-import HomeView from './components/HomeView'
-
-export default {
-    replace: false,
-    components: {
-        HomeView
-    }
-}
-</script>
 
 <style>
 html, body {
@@ -27,18 +21,18 @@ html, body {
 }
 
 body {
-    display: flex;
     background: url('assets/background.jpg') center / cover;
-}
-
-/* HACK: Fix width. */
-.mdl-layout__container {
-    position: relative !important;
 }
 </style>
 
 <style scoped lang="less">
 @import "material-colors";
+
+.top {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
 
 main {
     display: flex;
@@ -49,9 +43,55 @@ main {
 }
 
 section {
-    width: 400px;
     height: 100%;
     margin: auto;
     background-color: @md-white;
 }
+.left {
+    width: 36%;
+}
+.right {
+    width: 64%;
+    border-left: solid @md-dark-divider 1px;
+}
+
+.modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background: @md-dark-secondary;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
 </style>
+
+<script>
+    import HomeView from './components/HomeView'
+    import LoginView from './components/LoginView'
+
+    import EventBus from './eventbus'
+    import Store from './store'
+
+    export default {
+        replace: false,
+        created() {
+            EventBus.$on('show-login', (show = true) => this.showLogin = show);
+            Store.fetchProfile();
+        },
+        data() {
+            return {
+                showLogin: false
+            };
+        },
+        components: {
+            HomeView,
+            LoginView
+        }
+    }
+</script>

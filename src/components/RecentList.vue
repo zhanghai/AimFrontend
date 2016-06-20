@@ -14,6 +14,8 @@
 
 <script>
     import RecentView from './RecentView'
+
+    import EventBus from '../eventbus'
     import Store from '../store'
 
     export default {
@@ -25,8 +27,13 @@
                 recents: []
             };
         },
+        methods: {
+            fetchRecents() {
+                return Store.fetchRecents().then(recents => this.recents = recents);
+            }
+        },
         created() {
-            Store.fetchRecents().then(recents => this.recents = recents);
+            this.fetchRecents().then(() => EventBus.$on('recents-updated', this.fetchRecents));
         }
     }
 </script>

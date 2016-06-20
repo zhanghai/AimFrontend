@@ -1,8 +1,18 @@
 'use strict';
 
 import Api from './api'
+import EventBus from './eventbus'
+import Socket from './socket';
 
-function consoleError(e) {
+Socket.on('recentsUpdated', () => {
+    EventBus.$emit('recents-updated');
+});
+
+Socket.on('chatUpdated', chatId => {
+    EventBus.$emit('chat-updated', chatId);
+});
+
+function onError(e) {
     console.error(e);
 }
 
@@ -25,66 +35,66 @@ export default {
                 this.state.user = user;
                 return user;
             })
-            .catch(consoleError);
+            .catch(onError);
     },
 
     fetchRequests() {
         Api.fetchRequests()
-            .catch(consoleError);
+            .catch(onError);
     },
 
     resolveRequest(requestId, accept) {
         return Api.resolveRequest(requestId, accept)
-            .catch(consoleError)
+            .catch(onError)
     },
 
     deleteRequest(requestId) {
         return Api.deleteRequest(requestId)
-            .catch(consoleError);
+            .catch(onError);
     },
 
     fetchRecents() {
         return Api.fetchRecents()
-            .catch(consoleError);
+            .catch(onError);
     },
 
     fetchRecent(recentId) {
         return Api.fetchRecent(recentId)
-            .catch(consoleError);
+            .catch(onError);
     },
 
     updateRecent(recentId, lastReadAt) {
         return Api.updateRecent(recentId, lastReadAt)
-            .catch(consoleError);
+            .catch(onError);
     },
 
     deleteRecent(recentId) {
         return Api.delete(recentId)
-            .catch(consoleError);
+            .catch(onError);
     },
 
     fetchFriends() {
         return Api.fetchFriends()
-            .catch(consoleError);
+            .catch(onError);
     },
 
     fetchUser(username) {
         return Api.fetchUser(username)
-            .catch(consoleError);
+            .catch(onError);
     },
 
     fetchChat(chatId) {
         return Api.fetchChat(chatId)
-            .catch(consoleError);
+            .catch(onError);
     },
 
     fetchChatByUser(username) {
         return Api.fetchChatByUser(username)
-            .catch(consoleError);
+            .catch(onError);
     },
 
     sendMessage(chatId, text) {
         return Api.sendMessage(chatId, text)
-            .catch(consoleError);
+            .catch(onError);
     }
 }

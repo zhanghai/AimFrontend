@@ -90,7 +90,7 @@
                 if (member && member.lastReadAt) {
                     return this.recent.chat.messages.filter(message => message.createdAt > member.lastReadAt).length;
                 }
-                return this.recent.chat.messages.length;
+                return 0;
             }
         },
         created() {

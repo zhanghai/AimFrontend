@@ -9,6 +9,9 @@ const base = isDebugEnvironment ? '//localhost:3000/api/' : '/api/';
 const credentials = isDebugEnvironment ? 'include' : 'same-origin';
 
 const validateStatus = function(response) {
+    if (response.status === 401) {
+        window.location = '/login';
+    }
     if (response.status < 200 || response.status >= 300) {
         return Promise.reject(new Error('Bad response status: ' + response.status));
     }

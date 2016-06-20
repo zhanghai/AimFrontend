@@ -1,12 +1,12 @@
 <template>
     <div>
         <header class="navbar navbar-default">
-            <span class="navbar-brand">Aim</span>
+            <span class="navbar-brand">{{ state.user.nickname }}</span>
         </header>
         <nav>
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#chats" data-toggle="tab">Chats</a></li>
-                <li><a href="#friends" data-toggle="tab">Friends</a></li>
+                <li class="active"><a href="#chats" data-toggle="tab">聊天</a></li>
+                <li><a href="#friends" data-toggle="tab">朋友</a></li>
             </ul>
         </nav>
         <main class="tab-content">
@@ -77,7 +77,14 @@
     import FriendList from './FriendList'
     import RecentList from './RecentList'
 
+    import Store from '../store'
+
     export default{
+        data() {
+            return {
+                state: Store.state
+            }
+        },
         components: {
             FriendList,
             RecentList

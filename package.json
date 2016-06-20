@@ -15,11 +15,12 @@
     "bootstrap": "^3.3.6",
     "jquery": "^1.12.4",
     "material-design-icons": "^2.2.3",
+    "moment": "latest",
+    "socket.io-client": "^1.4.6",
     "vue": "^1.0.21",
     "vue-moment": "^1.0.7",
     "vue-router": "^0.7.13",
-    "whatwg-fetch": "^1.0.0",
-    "moment": "latest"
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

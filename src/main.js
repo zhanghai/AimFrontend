@@ -44,6 +44,9 @@ moment.updateLocale('zh-cn', {
     calendar: {
         lastDay: '[昨天] HH:mm',
         sameDay: 'HH:mm',
+        nextDay: 'YYYY-MM-DD HH:mm',
+        lastWeek: 'YYYY-MM-DD HH:mm',
+        nextWeek: 'YYYY-MM-DD HH:mm',
         sameElse: 'YYYY-MM-DD HH:mm'
     }
 });

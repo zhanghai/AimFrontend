@@ -5,17 +5,11 @@
         </header>
         <main>
             <div class="messages" v-el:messages>
-                <div v-for="message of chat.messages" :class="['message', message.user._id === state.user._id ? 'reverse' : '']">
-                    <img :src="message.user.avatar" class="img-circle">
-                    <div>
-                        <span class="time">{{ message.createdAt | moment 'calendar' }}</span>
-                        <div class="well text">{{ message.text }}</div>
-                    </div>
-                </div>
+                <message-view v-for="message of chat.messages" :message="message"></message-view>
             </div>
             <div class="compose">
                 <div class="form-group">
-                    <textarea v-el:text rows="1" placeholder="发送消息…" v-model="text" @keyup.enter="textKeyUp($event)" @input="resizeText" class="form-control"></textarea>
+                    <textarea v-el:text rows="1" placeholder="发送消息…" class="form-control" v-model="text" @keyup.enter="textKeyUp($event)" @input="resizeText"></textarea>
                 </div>
                 <button @click="sendMessage" class="btn"><i class="material-icons">send</i></button>
             </div>
@@ -57,42 +51,6 @@
         flex-grow: 1;
         overflow-y: auto;
     }
-    .message {
-        display: flex;
-        padding: 8px 16px;
-        align-items: flex-start;
-    }
-    .message:first-child {
-        padding-top: 16px;
-    }
-    .message:last-child {
-        padding-bottom: 16px;
-    }
-    .message.reverse {
-        flex-direction: row-reverse;
-    }
-    .img-circle {
-        width: 40px;
-        height: 40px;
-    }
-    .message > div {
-        display: flex;
-        flex-direction: column;
-        margin-left: 16px;
-    }
-    .message.reverse > div {
-        align-items: flex-end;
-        margin-right: 16px;
-    }
-    .message > div > .time {
-        font-size: 10px;
-    }
-    .message > div > .text {
-        margin: 0;
-        padding: 7px;
-        background: @md-white;
-        white-space: pre-wrap;
-    }
 
     .compose {
         display: flex;
@@ -120,19 +78,25 @@
 <script>
     import Vue from 'vue';
 
+    import MessageView from './MessageView'
+
+    import EventBus from '../eventbus'
     import Store from '../store'
 
     export default {
         data() {
             return {
-                chat: null,
-                text: null,
+                chat: {
+                    members: [],
+                    messages: []
+                },
+                text: "",
                 state: Store.state
             };
         },
         computed: {
             name() {
-                if (!this.chat) {
+                if (!Object.keys(this.chat).length) {
                     return "";
                 }
                 return this.chat.name || this.chat.members
@@ -146,12 +110,11 @@
                 this.$els.messages.scrollTop = this.$els.messages.scrollHeight;
             },
             sendMessage() {
-                if (!this.text || !this.text.length) {
+                if (!this.text.length) {
                     return;
                 }
                 Store.sendMessage(this.chat._id, this.text)
                     .then(message => {
-                        this.chat.messages.push(message);
                         this.text = "";
                     });
             },
@@ -169,16 +132,29 @@
                 this.scrollMessagesToBottom();
             }
         },
+        components: {
+            MessageView
+        },
+        created() {
+            EventBus.$on('chat-updated', chatId => {
+                if (this.chat._id === chatId) {
+                    Store.fetchChat(chatId).then(chat => {
+                        this.chat = chat;
+                    });
+                }
+            });
+        },
         route: {
             data(transition) {
                 if (transition.to.name === 'chat') {
                     return {
                         chat: Store.fetchChat(transition.to.params.chatId)
                     };
+                } else {
+                    return {
+                        chat: Store.fetchChatByUser(transition.to.params.username)
+                    };
                 }
-                return {
-                    chat: Store.fetchChatByUser(transition.to.params.username)
-                };
             }
         }
     }
