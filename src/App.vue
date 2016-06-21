@@ -8,72 +8,108 @@
                 <router-view></router-view>
             </section>
         </main>
-        <div class="modal" :class="{ visible: showLogin }">
-            <login-view></login-view>
+        <div class="modal" :class="{ active: modal }" @click="modal = ''">
+            <user-view v-show="modal === 'user'"></user-view>
+            <search-view v-show="modal === 'search'"></search-view>
         </div>
     </div>
 </template>
 
-<style>
-html, body {
-    width: 100%;
-    height: 100%;
-}
+<style lang="less">
+    @import "material-colors";
 
-body {
-    background: url('assets/background.jpg') center / cover;
-}
+    html, body {
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        background: url('assets/background.jpg') center / cover;
+    }
+
+    span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .navbar {
+        flex-shrink: 0;
+        display: flex;
+        height: 56px;
+        margin: 0 !important;
+        align-items: center;
+    }
+    .navbar-brand {
+        height: initial !important;
+        margin-left: 16px;
+        padding: 0 !important;
+        color: @md-light-primary !important;
+        line-height: initial !important;
+        font-size: 20px !important;
+    }
+
+    .btn {
+        outline: none !important;
+    }
+
+    .btn-raised .btn-primary {
+        color: @md-white !important;
+    }
 </style>
 
 <style scoped lang="less">
-@import "material-colors";
+    @import "material-colors";
 
-.top {
-    width: 100%;
-    height: 100%;
-    display: flex;
-}
+    .top {
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
 
-main {
-    display: flex;
-    width: 960px;
-    height: 90%;
-    max-height: 720px;
-    margin: auto;
-}
+    main {
+        display: flex;
+        width: 960px;
+        height: 90%;
+        max-height: 720px;
+        margin: auto;
+    }
 
-section {
-    height: 100%;
-    margin: auto;
-    background-color: @md-white;
-}
-.left {
-    width: 36%;
-}
-.right {
-    width: 64%;
-    border-left: solid @md-dark-divider 1px;
-}
+    section {
+        height: 100%;
+        margin: auto;
+        background: @md-white;
+    }
+    .left {
+        width: 36%;
+    }
+    .right {
+        width: 64%;
+        border-left: solid @md-dark-divider 1px;
+    }
 
-.modal {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    background: @md-dark-secondary;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-.modal.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
+    .modal {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: @md-dark-secondary;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    .modal.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
 </style>
 
 <script>
     import HomeView from './components/HomeView'
-    import LoginView from './components/LoginView'
+    import SearchView from './components/SearchView'
+    import UserView from './components/UserView'
 
     import EventBus from './eventbus'
     import Store from './store'
@@ -81,17 +117,21 @@ section {
     export default {
         replace: false,
         created() {
-            EventBus.$on('show-login', (show = true) => this.showLogin = show);
+            EventBus.$on('show-user', () => this.modal = 'user');
+            EventBus.$on('hide-user', () => this.modal = '');
+            EventBus.$on('show-search', () => this.modal = 'search');
+            EventBus.$on('hide-search', () => this.modal = '');
             Store.fetchProfile();
         },
         data() {
             return {
-                showLogin: false
+                modal: false
             };
         },
         components: {
             HomeView,
-            LoginView
+            SearchView,
+            UserView
         }
     }
 </script>

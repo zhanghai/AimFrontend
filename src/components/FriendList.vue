@@ -1,8 +1,8 @@
 <template>
     <div class="list-group">
-        <div v-for="friend of friends" track-by="_id" v-link="{ name: 'chatByUser', params: { username: friend.username } }" class="list-group-item withripple">
-            <img :src="friend.avatar" class="img-circle">
-            <span class="name">{{ friend.alias || friend.nickname }}</span>
+        <div v-for="group of groups">
+            <div class="tag">{{ group.tag }}</div>
+            <friend-view v-for="friend of group.friends" track-by="_id" :friend="friend"></friend-view>
         </div>
     </div>
 </template>
@@ -14,40 +14,77 @@
         margin: 0;
     }
 
-    .list-group-item {
-        display: flex;
-        height: 56px;
-        padding: 8px 16px;
-        align-items: center;
-        cursor: pointer;
-        transition: background ease 0.2s;
+    .tag {
+        height: 48px;
+        padding: 0 16px;
+        border-top: solid @md-dark-divider 1px;
+        color: @md-dark-secondary;
+        font-size: 14px;
+        line-height: 48px;
     }
-    .list-group-item.v-link-active {
-        background: rgba(0, 0, 0, 0.06);
-    }
-
-    .img-circle {
-        width: 40px;
-        height: 40px;
-    }
-
-    .name {
-        margin-left: 16px;
-        font-size: 16px;
+    .tag:first-child {
+        border: none;
     }
 </style>
 
 <script>
+    import FriendView from './FriendView'
+
+    import EventBus from '../eventbus'
     import Store from '../store'
 
     export default {
         data() {
             return {
-                friends: []
+                friends: [{
+                    tags: []
+                }]
             };
         },
+        computed: {
+            groups() {
+                const groups = [];
+                for (const friend of this.friends) {
+                    if (friend.tags.length) {
+                        for (const tag of friend.tags) {
+                            const group = groups.find(group => group.tag === tag);
+                            if (!group) {
+                                groups.push({
+                                    tag,
+                                    friends: [friend]
+                                })
+                            } else {
+                                group.friends.push(friend);
+                            }
+                        }
+                    } else {
+                        const tag = '未分类';
+                        const group = groups.find(group => group.tag === tag);
+                        if (!group) {
+                            groups.push({
+                                tag,
+                                friends: [friend]
+                            })
+                        } else {
+                            group.friends.push(friend);
+                        }
+                    }
+                }
+                groups.sort((group1, group2) => group1.tag - group2.tag);
+                return groups;
+            }
+        },
+        methods: {
+            fetchFriends() {
+                return Store.fetchFriends().then(friends => this.friends = friends);
+            }
+        },
         created() {
-            Store.fetchFriends().then(friends => this.friends = friends);
+            this.fetchFriends()
+                .then(() => EventBus.$on('friends-updated', this.fetchFriends));
+        },
+        components: {
+            FriendView
         }
     }
 </script>

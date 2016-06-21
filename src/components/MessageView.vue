@@ -1,6 +1,6 @@
 <template>
     <div class="message" :class="{ reverse: message.user._id === state.user._id }">
-        <img :src="message.user.avatar" class="img-circle">
+        <img :src="message.user.avatar" class="img-circle" @click="showUser(message.user.username)">
         <div>
             <span class="time">{{ message.createdAt | moment 'calendar' }}</span>
             <div class="well text">{{ message.text }}</div>
@@ -29,6 +29,7 @@
     .img-circle {
         width: 40px;
         height: 40px;
+        cursor: pointer;
     }
 
     .message > div {
@@ -53,12 +54,19 @@
 </style>
 
 <script>
+    import EventBus from '../eventbus'
+
     export default{
         props: ['message'],
         data() {
             return {
                 state: Store.state
             };
+        },
+        methods: {
+            showUser(username) {
+                EventBus.$emit('show-user', username);
+            }
         }
     }
 </script>

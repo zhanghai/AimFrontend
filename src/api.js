@@ -127,15 +127,19 @@ export default {
         return delete_('friends/' + username);
     },
 
+    searchUsers(keyword) {
+        return get('users?keyword=' + window.encodeURIComponent(keyword));
+    },
+
     fetchUser(username) {
         return get('users/' + username);
     },
 
-    updateUser(username, alias, tags, description) {
+    updateUser(username, alias, description, tags) {
         return patch('users/' + username, {
             alias,
-            tags,
-            description
+            description,
+            tags
         });
     },
 

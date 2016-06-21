@@ -16,6 +16,7 @@
     "jquery": "^1.12.4",
     "material-design-icons": "^2.2.3",
     "moment": "latest",
+    "snackbarjs": "^1.1.0",
     "socket.io-client": "^1.4.6",
     "vue": "^1.0.21",
     "vue-moment": "^1.0.7",

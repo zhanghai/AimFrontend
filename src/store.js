@@ -4,11 +4,15 @@ import Api from './api'
 import EventBus from './eventbus'
 import Socket from './socket';
 
-Socket.on('recentsUpdated', () => {
+Socket.on('recents-updated', () => {
     EventBus.$emit('recents-updated');
 });
 
-Socket.on('chatUpdated', chatId => {
+Socket.on('requests-updated', () => {
+    EventBus.$emit('requests-updated');
+});
+
+Socket.on('chat-updated', chatId => {
     EventBus.$emit('chat-updated', chatId);
 });
 
@@ -30,7 +34,7 @@ export default {
     },
 
     fetchProfile() {
-        Api.fetchProfile()
+        return Api.fetchProfile()
             .then(user => {
                 this.state.user = user;
                 return user;
@@ -39,7 +43,12 @@ export default {
     },
 
     fetchRequests() {
-        Api.fetchRequests()
+        return Api.fetchRequests()
+            .catch(onError);
+    },
+
+    sendRequest(username, message) {
+        return Api.sendRequest(username, message)
             .catch(onError);
     },
 
@@ -78,8 +87,23 @@ export default {
             .catch(onError);
     },
 
+    deleteFriend(username) {
+        return Api.deleteFriend(username)
+            .catch(onError);
+    },
+
+    searchUsers(keyword) {
+        return Api.searchUsers(keyword)
+            .catch(onError);
+    },
+
     fetchUser(username) {
         return Api.fetchUser(username)
+            .catch(onError);
+    },
+
+    updateUser(username, alias, description, tags) {
+        return Api.updateUser(username, alias, description, tags)
             .catch(onError);
     },
 

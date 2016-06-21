@@ -31,9 +31,11 @@
     }
 
     .list-group-item > div {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        /* https://css-tricks.com/flexbox-truncated-text/ */
+        min-width: 0;
         margin-left: 16px;
     }
 
@@ -47,7 +49,6 @@
 
     .badge {
         flex-shrink: 0;
-        margin-left: auto;
         background-color: @md-red-500;
     }
 </style>
@@ -77,7 +78,7 @@
                 this.state.user._id;
                 return this.recent.chat.name || this.recent.chat.members
                         .filter(member => member.user._id !== this.state.user._id)
-                        .map(member => member.user.alias ? member.user.alias : member.user.nickname)
+                        .map(member => member.user.alias || member.user.nickname)
                         .join('，');
             },
             message() {
@@ -87,10 +88,15 @@
                 //noinspection BadExpressionStatementJS
                 this.state.user._id;
                 const member = this.recent.chat.members.find(member => member.user._id === this.state.user._id);
-                if (member && member.lastReadAt) {
-                    return this.recent.chat.messages.filter(message => message.createdAt > member.lastReadAt).length;
+                if (member) {
+                    if (member.lastReadAt) {
+                        return this.recent.chat.messages.filter(message => message.createdAt > member.lastReadAt).length;
+                    } else {
+                        return this.recent.chat.messages.length;
+                    }
+                } else {
+                    return 0;
                 }
-                return 0;
             }
         },
         created() {

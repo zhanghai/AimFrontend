@@ -2,6 +2,8 @@
     <div>
         <header class="navbar navbar-default">
             <span class="navbar-brand">{{ state.user.nickname }}</span>
+            <button class="btn search" @click="showSearch"><i class="material-icons">search</i></button>
+            <button class="btn" @click="showProfile"><i class="material-icons">person</i></button>
         </header>
         <nav>
             <ul class="nav nav-tabs">
@@ -23,19 +25,14 @@
 <style scoped lang="less">
     @import "../material-colors";
 
-    .navbar {
-        display: flex;
-        height: 56px;
-        margin: 0;
-        align-items: center;
+    .navbar > .btn {
+        margin: 0 4px 0 0;
+        padding: 12px;
+        border-radius: 50%;
+        color: @md-white;
     }
-    .navbar-brand {
-        flex-shrink: 0;
-        height: initial !important;
-        padding: 0 16px;
-        color: @md-light-primary !important;
-        line-height: initial !important;
-        font-size: 20px;
+    .navbar > .btn.search {
+        margin: 0 0 0 auto;
     }
 
     .nav {
@@ -77,12 +74,21 @@
     import FriendList from './FriendList'
     import RecentList from './RecentList'
 
+    import EventBus from '../eventbus'
     import Store from '../store'
 
     export default{
         data() {
             return {
                 state: Store.state
+            }
+        },
+        methods: {
+            showSearch() {
+                EventBus.$emit('show-search');
+            },
+            showProfile() {
+                EventBus.$emit('show-user', this.state.user.username);
             }
         },
         components: {

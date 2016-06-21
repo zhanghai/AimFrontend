@@ -1,5 +1,6 @@
 <template>
     <div class="list-group">
+        <recent-request-view></recent-request-view>
         <recent-view v-for="recent of recents" track-by="_id" :recent="recent"></recent-view>
     </div>
 </template>
@@ -14,13 +15,15 @@
 
 <script>
     import RecentView from './RecentView'
+    import RecentRequestView from './RecentRequestView'
 
     import EventBus from '../eventbus'
     import Store from '../store'
 
     export default {
         components: {
-            RecentView
+            RecentView,
+            RecentRequestView
         },
         data() {
             return {
@@ -33,7 +36,8 @@
             }
         },
         created() {
-            this.fetchRecents().then(() => EventBus.$on('recents-updated', this.fetchRecents));
+            this.fetchRecents()
+                    .then(() => EventBus.$on('recents-updated', this.fetchRecents));
         }
     }
 </script>

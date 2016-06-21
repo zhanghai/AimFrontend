@@ -5,7 +5,7 @@
         </header>
         <main>
             <div class="messages" v-el:messages>
-                <message-view v-for="message of chat.messages" :message="message"></message-view>
+                <message-view v-for="message of chat.messages" track-by="_id" :message="message"></message-view>
             </div>
             <div class="compose">
                 <div class="form-group">
@@ -24,21 +24,6 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-    }
-
-    .navbar {
-        flex-shrink: 0;
-        display: flex;
-        height: 56px;
-        margin: 0;
-        align-items: center;
-    }
-    .navbar-brand {
-        height: initial !important;
-        padding: 0 16px;
-        color: @md-light-primary !important;
-        line-height: initial !important;
-        font-size: 20px;
     }
 
     main {
@@ -101,7 +86,7 @@
                 }
                 return this.chat.name || this.chat.members
                         .filter(member => member.user._id !== this.state.user._id)
-                        .map(member => member.user.alias ? member.user.alias : member.user.nickname)
+                        .map(member => member.user.alias || member.user.nickname)
                         .join('，');
             }
         },
@@ -137,8 +122,8 @@
         },
         created() {
             EventBus.$on('chat-updated', chatId => {
-                if (this.chat._id === chatId) {
-                    Store.fetchChat(chatId).then(chat => {
+                if (!chatId || this.chat._id === chatId) {
+                    Store.fetchChat(this.chat._id).then(chat => {
                         this.chat = chat;
                     });
                 }
