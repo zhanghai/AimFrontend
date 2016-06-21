@@ -42,6 +42,15 @@ export default {
             .catch(onError);
     },
 
+    updateProfile(avatar, nickname, signature) {
+        return Api.updateProfile(avatar, nickname, signature)
+            .then(user => {
+                this.state.user = user;
+                return user;
+            })
+            .catch(onError);
+    },
+
     fetchRequests() {
         return Api.fetchRequests()
             .catch(onError);

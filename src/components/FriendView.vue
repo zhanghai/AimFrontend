@@ -1,7 +1,10 @@
 <template>
     <div v-link="{ name: 'chatByUser', params: { username: friend.username } }" class="list-group-item withripple">
         <img :src="friend.avatar" class="img-circle" @click.stop="showUser(friend.username)">
-        <span class="name">{{ friend.alias || friend.nickname }}</span>
+        <div>
+            <span class="name">{{ friend.alias || friend.nickname }}</span>
+            <span class="signature">{{ friend.signature || '（无签名）' }}</span>
+        </div>
     </div>
 </template>
 
@@ -26,9 +29,21 @@
         cursor: pointer;
     }
 
-    .name {
+    .list-group-item > div {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        /* https://css-tricks.com/flexbox-truncated-text/ */
+        min-width: 0;
         margin-left: 16px;
+    }
+
+    .name {
         font-size: 16px;
+    }
+
+    .signature {
+        color: @md-dark-secondary;
     }
 </style>
 

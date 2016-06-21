@@ -10,6 +10,7 @@
         </main>
         <div class="modal" :class="{ active: modal }" @click="modal = ''">
             <user-view v-show="modal === 'user'"></user-view>
+            <profile-view v-show="modal === 'profile'"></profile-view>
             <search-view v-show="modal === 'search'"></search-view>
         </div>
     </div>
@@ -108,6 +109,7 @@
 
 <script>
     import HomeView from './components/HomeView'
+    import ProfileView from './components/ProfileView'
     import SearchView from './components/SearchView'
     import UserView from './components/UserView'
 
@@ -117,8 +119,10 @@
     export default {
         replace: false,
         created() {
-            EventBus.$on('show-user', () => this.modal = 'user');
+            EventBus.$on('show-user', (username) => this.modal = username === Store.state.user.username ? 'profile' : 'user');
             EventBus.$on('hide-user', () => this.modal = '');
+            EventBus.$on('show-profile', () => this.modal = 'profile');
+            EventBus.$on('hide-profile', () => this.modal = '');
             EventBus.$on('show-search', () => this.modal = 'search');
             EventBus.$on('hide-search', () => this.modal = '');
             Store.fetchProfile();
@@ -130,6 +134,7 @@
         },
         components: {
             HomeView,
+            ProfileView,
             SearchView,
             UserView
         }
