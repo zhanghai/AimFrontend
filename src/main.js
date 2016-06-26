@@ -23,8 +23,9 @@ import VueMomemnt from 'vue-moment';
 
 import App from './App';
 
+import EmptyView from './components/EmptyView'
 import ChatView from './components/ChatView'
-import RequestList from './components/RequestList.vue'
+import RequestList from './components/RequestList'
 
 Vue.use(VueRouter);
 
@@ -32,6 +33,10 @@ const router = new VueRouter({
     abstract: true
 });
 router.map({
+    '/': {
+        name: 'empty',
+        component: EmptyView
+    },
     '/requests': {
         name: 'requests',
         component: RequestList
