@@ -57,7 +57,7 @@
         flex-direction: column;
         justify-content: flex-end;
     }
-    header > span {
+    header > .title {
         margin: 0 0 12px 56px;
         font-size: 34px;
         color: @md-white;

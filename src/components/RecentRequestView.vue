@@ -1,6 +1,6 @@
 <template>
     <div v-link="{ name: 'requests' }" class="list-group-item withripple">
-        <img src="/static/img/default-avatar.svg" class="img-circle">
+        <img src="../assets/requests.svg" class="img-circle">
         <div>
             <span class="name">好友请求</span>
             <span class="message">{{ message }}</span>

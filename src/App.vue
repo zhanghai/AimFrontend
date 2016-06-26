@@ -50,6 +50,10 @@
         font-size: 20px !important;
     }
 
+    .img-circle {
+        object-fit: cover;
+    }
+
     .btn {
         outline: none !important;
     }

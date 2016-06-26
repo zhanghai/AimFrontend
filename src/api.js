@@ -1,14 +1,12 @@
 'use strict';
 
-import 'whatwg-fetch'
-
 const isDebugEnvironment = process.env.NODE_ENV === 'development';
-
 const base = isDebugEnvironment ? '//localhost:3000/api/' : '/api/';
-
 const credentials = isDebugEnvironment ? 'include' : 'same-origin';
 
-const validateStatus = function(response) {
+const usePostForPatch = true;
+
+function validateStatus(response) {
     if (response.status === 401) {
         window.location = '/login';
     }
@@ -16,17 +14,17 @@ const validateStatus = function(response) {
         return Promise.reject(new Error('Bad response status: ' + response.status));
     }
     return response;
-};
+}
 
 const toJson = response => response.json();
 
-const get = function (resource) {
+function get(resource) {
     return fetch(base + resource, { credentials })
         .then(validateStatus)
         .then(toJson);
-};
+}
 
-const post = function (resource, body) {
+function post(resource, body) {
     return fetch(base + resource, {
         method: 'post',
         credentials,
@@ -35,9 +33,9 @@ const post = function (resource, body) {
     })
         .then(validateStatus)
         .then(toJson);
-};
+}
 
-const patch = isDebugEnvironment ? post : function (resource, body) {
+const patch = usePostForPatch ? post : function (resource, body) {
     return fetch(base + resource, {
         method: 'patch',
         credentials,
@@ -48,13 +46,13 @@ const patch = isDebugEnvironment ? post : function (resource, body) {
         .then(toJson);
 };
 
-const delete_ = function (resource) {
+function delete_(resource) {
     return fetch(base + resource, {
         method: 'delete',
         credentials
     })
         .then(validateStatus);
-};
+}
 
 export default {
 

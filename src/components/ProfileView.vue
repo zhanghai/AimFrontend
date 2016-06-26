@@ -1,6 +1,6 @@
 <template>
     <div class="container" @click.stop="">
-        <header :style="{ background: 'linear-gradient(transparent, transparent, rgba(0, 0, 0, 0.38)), url(' + user.avatar + ') center / cover' }">
+        <header v-el:header :style="{ background: 'linear-gradient(transparent, transparent, rgba(0, 0, 0, 0.38)), url(' + avatar + ') center / cover' }" @click="uploadAvatar">
             <span class="title">{{ user.nickname }}</span>
         </header>
         <main>
@@ -15,6 +15,9 @@
             <button class="btn btn-raised btn-primary" @click="save">保存</button>
             <button class="btn btn-primary" @click="close">取消</button>
         </footer>
+        <form v-el:form>
+            <input v-el:upload name="file" type="file" class="upload" @change="onAvatarUploadChanged">
+        </form>
     </div>
 </template>
 
@@ -39,7 +42,7 @@
         flex-direction: column;
         justify-content: flex-end;
     }
-    header > span {
+    header > .title {
         margin: 0 0 12px 56px;
         font-size: 34px;
         color: @md-white;
@@ -96,11 +99,16 @@
         margin-right: auto;
         color: @md-red-500;
     }
+
+    .upload {
+        display: none;
+    }
 </style>
 
 <script>
     import EventBus from '../eventbus'
     import Store from '../store'
+    import Xhr from '../xhr'
 
     export default{
         data() {
@@ -117,14 +125,27 @@
             }
         },
         methods: {
+            uploadAvatar() {
+                this.$els.upload.click();
+            },
+            onAvatarUploadChanged(event) {
+                Xhr.post('upload', this.$els.form)
+                        .then((file) => this.avatar = file.path);
+            },
             save() {
-                throw new Error("avatar and nickname will be ruined!");
                 Store.updateProfile(this.avatar, this.nickname, this.signature)
                         .then(() => EventBus.$emit('chat-updated'))
                         .then(this.close);
             },
             close() {
                 EventBus.$emit('hide-profile');
+            }
+        },
+        watch: {
+            'state.user'() {
+                this.avatar = this.state.user.avatar;
+                this.nickname = this.state.user.nickname;
+                this.signature = this.state.user.signature;
             }
         }
     }
